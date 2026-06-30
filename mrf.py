@@ -352,7 +352,7 @@ if __name__ == "__main__":
 
             print('Recent Model: ')
             
-            evaluate(model_avg, input_combinations, prediction_history, X_len, ground_truth, epoch, metric=wasserstein_distance, num_samples=num_samples)
+            evaluate(model, input_combinations, prediction_history, X_len, ground_truth, epoch, metric=wasserstein_distance, num_samples=num_samples)
 
             print('\n')
 
