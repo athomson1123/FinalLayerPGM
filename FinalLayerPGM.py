@@ -209,8 +209,8 @@ def evaluate(model, input_combinations, prediction_history, dataset_size, ground
 
                 variance = torch.var(samples)
                 
-                log_likelihood = (torch.sum(torch.exp(-0.5 * variance * torch.norm(samples - true_prob, 2))) 
-                                - torch.log(torch.tensor(len(samples))) - 0.5*torch.log(2 * torch.tensor(torch.pi)) + 0.5 * torch.log(variance))
+                log_likelihood = (torch.logsumexp(-0.5 * (1/variance) * (samples - true_prob) ** 2, dim=0) 
+                                - torch.log(torch.tensor(len(samples))) - 0.5*torch.log(2 * torch.tensor(torch.pi)) - 0.5 * torch.log(variance))
                 
                 print(input_combination, ' negative log-likelihood: ', -log_likelihood.item())
                 nll_sum += -log_likelihood.item()
@@ -266,7 +266,7 @@ if __name__ == "__main__":
 
     print('y counts:', torch.sum(y).item())
 
-    epochs = 99
+    epochs = 100
     report = 10
     num_samples = 10000
     num_checkpoints = len(dataset)
